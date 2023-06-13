@@ -31,7 +31,7 @@ namespace WeAreDevs.Controllers
         /// <param name="id">Id do usuário</param>
         /// <returns></returns>
         [HttpGet("filtro")]
-        public Usuario ObterUsuarioUsandoParametros([FromQuery] int id)
+        public Usuario ObterUsuarioUsandoParametros([FromQuery] Guid id)
         {
             return _usuarioRepository.ObterUsuario(id);
         }
@@ -42,7 +42,7 @@ namespace WeAreDevs.Controllers
         /// <param name="id">Id do usuário</param>
         /// <returns></returns>
         [HttpGet("filtro/{id}")]
-        public Usuario ObterUsuarioUsandoRota([FromRoute] int id)
+        public Usuario ObterUsuarioUsandoRota([FromRoute] Guid id)
         {
             return _usuarioRepository.ObterUsuario(id);
         }
@@ -53,9 +53,30 @@ namespace WeAreDevs.Controllers
         /// <param name="usuario">Objeto para a criação de um usuário</param>
         /// <returns></returns>
         [HttpPost]
-        public List<Usuario> InserirUsuario([FromBody] Usuario usuario)
+        public Usuario InserirUsuario([FromBody] Usuario usuario)
         {
             return _usuarioRepository.InserirUsuario(usuario);
+        }
+
+        /// <summary>
+        /// Atualiza um usuário.
+        /// </summary>
+        /// <param name="dadosUsuario">Objeto para a atualização de um usuário</param>
+        /// <returns></returns>
+        [HttpPut]
+        public Usuario AtualizarUsuario([FromBody] Usuario dadosUsuario)
+        {
+            return _usuarioRepository.AtualizarUsuario(dadosUsuario);
+        }
+
+        /// <summary>
+        /// Remove um usuário.
+        /// </summary>
+        /// <param name="id">Id do usuário</param>
+        [HttpDelete]
+        public void RemoverUsuario([FromQuery] Guid id)
+        {
+            _usuarioRepository.RemoverUsuario(id);
         }
     }
 }

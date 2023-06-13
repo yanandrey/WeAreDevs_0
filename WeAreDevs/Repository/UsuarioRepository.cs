@@ -1,62 +1,91 @@
-﻿using WeAreDevs.Models;
+﻿using WeAreDevs.Context;
+using WeAreDevs.Models;
 
 namespace WeAreDevs.Repository
 {
     public interface IUsuarioRepository
     {
         List<Usuario> ObterUsuarios();
-        Usuario ObterUsuario(int id);
-        List<Usuario> InserirUsuario(Usuario novoUsuario);
+        Usuario ObterUsuario(Guid id);
+        Usuario InserirUsuario(Usuario novoUsuario);
+        Usuario AtualizarUsuario(Usuario dadosUsuario);
+        void RemoverUsuario(Guid id);
     }
 
     public class UsuarioRepository : IUsuarioRepository
     {
-        List<Usuario> listaDeUsuarios = new List<Usuario>()
+        private readonly ApiDbContext _context;
+
+        public UsuarioRepository(ApiDbContext context)
         {
-            new Usuario()
-            {
-                Id = 1,
-                Nome = "Yan",
-                Descricao = ".",
-                Idade = 45
-            },
-            new Usuario()
-            {
-                Id = 2,
-                Nome = "João",
-                Descricao = ".",
-                Idade = 25
-            },
-            new Usuario()
-            {
-                Id = 3,
-                Nome = "Maria",
-                Descricao = ".",
-                Idade = 30
-            }
-        };
+            _context = context;
+        }
 
         public List<Usuario> ObterUsuarios()
         {
-            return listaDeUsuarios;
+            var query = _context.Usuarios
+                .ToList();
+
+            return query;
         }
 
-        public Usuario ObterUsuario(int id)
+        public Usuario ObterUsuario(Guid id)
         {
-            var usuario = listaDeUsuarios.Where(x => x.Id == id).FirstOrDefault();
-            
-            if (usuario != default)
+            var query = _context.Usuarios
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+
+            return query;
+        }
+
+        public Usuario InserirUsuario(Usuario novoUsuario)
+        {
+            var usuario = new Usuario()
             {
-                return usuario;
+                Nome = novoUsuario.Nome,
+                Email = novoUsuario.Email,
+                Senha = novoUsuario.Senha
+            };
+
+            _context.Usuarios.Add(usuario);
+            _context.SaveChanges();
+
+            return usuario;
+        }
+
+        public Usuario AtualizarUsuario(Usuario dadosUsuario)
+        {
+            var usuario = _context.Usuarios
+                .Where(x => x.Id == dadosUsuario.Id)
+                .FirstOrDefault();
+
+            if (usuario == default)
+            {
+                throw new Exception("Usuário não encontrado");
             }
 
-            return new Usuario();
+            usuario.Nome = dadosUsuario.Nome;
+            usuario.Email = dadosUsuario.Email;
+            usuario.Senha = dadosUsuario.Senha;
+
+            _context.SaveChanges();
+
+            return usuario;
         }
 
-        public List<Usuario> InserirUsuario(Usuario novoUsuario)
+        public void RemoverUsuario(Guid id)
         {
-            listaDeUsuarios.Add(novoUsuario);
-            return listaDeUsuarios;
+            var usuario = _context.Usuarios
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+
+            if (usuario == default)
+            {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            _context.Usuarios.Remove(usuario);
+            _context.SaveChanges();
         }
     }
 }
