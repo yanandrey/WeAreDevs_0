@@ -1,11 +1,10 @@
-﻿namespace WeAreDevs.Models
+﻿namespace WeAreDevs.DTOs.Request
 {
-    public class Usuario
+    public class UsuarioUpdateRequestDto
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
-        public Conta Conta { get; set; }
     }
 }

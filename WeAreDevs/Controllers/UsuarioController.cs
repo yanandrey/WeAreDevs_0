@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WeAreDevs.Models;
+using WeAreDevs.DTOs.Request;
+using WeAreDevs.DTOs.Response;
 using WeAreDevs.Repository;
 
 namespace WeAreDevs.Controllers
@@ -20,7 +21,7 @@ namespace WeAreDevs.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IList<Usuario> ObterUsuarios()
+        public IList<UsuarioResponseDto> ObterUsuarios()
         {
             return _usuarioRepository.ObterUsuarios();
         }
@@ -31,7 +32,7 @@ namespace WeAreDevs.Controllers
         /// <param name="id">Id do usuário</param>
         /// <returns></returns>
         [HttpGet("filtro")]
-        public Usuario ObterUsuarioUsandoParametros([FromQuery] Guid id)
+        public UsuarioResponseDto ObterUsuarioUsandoParametros([FromQuery] Guid id)
         {
             return _usuarioRepository.ObterUsuario(id);
         }
@@ -42,7 +43,7 @@ namespace WeAreDevs.Controllers
         /// <param name="id">Id do usuário</param>
         /// <returns></returns>
         [HttpGet("filtro/{id}")]
-        public Usuario ObterUsuarioUsandoRota([FromRoute] Guid id)
+        public UsuarioResponseDto ObterUsuarioUsandoRota([FromRoute] Guid id)
         {
             return _usuarioRepository.ObterUsuario(id);
         }
@@ -53,7 +54,7 @@ namespace WeAreDevs.Controllers
         /// <param name="usuario">Objeto para a criação de um usuário</param>
         /// <returns></returns>
         [HttpPost]
-        public Usuario InserirUsuario([FromBody] Usuario usuario)
+        public UsuarioResponseDto InserirUsuario([FromBody] UsuarioRequestDto usuario)
         {
             return _usuarioRepository.InserirUsuario(usuario);
         }
@@ -64,7 +65,7 @@ namespace WeAreDevs.Controllers
         /// <param name="dadosUsuario">Objeto para a atualização de um usuário</param>
         /// <returns></returns>
         [HttpPut]
-        public Usuario AtualizarUsuario([FromBody] Usuario dadosUsuario)
+        public UsuarioResponseDto AtualizarUsuario([FromBody] UsuarioUpdateRequestDto dadosUsuario)
         {
             return _usuarioRepository.AtualizarUsuario(dadosUsuario);
         }
