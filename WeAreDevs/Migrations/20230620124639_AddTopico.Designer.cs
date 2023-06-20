@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeAreDevs.Context;
 
@@ -11,9 +12,11 @@ using WeAreDevs.Context;
 namespace WeAreDevs.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230620124639_AddTopico")]
+    partial class AddTopico
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,21 +132,6 @@ namespace WeAreDevs.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("WeAreDevs.Models.UsuarioCurso", b =>
-                {
-                    b.Property<Guid>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CursoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("UsuarioId", "CursoId");
-
-                    b.HasIndex("CursoId");
-
-                    b.ToTable("UsuarioCursos");
-                });
-
             modelBuilder.Entity("WeAreDevs.Models.Topico", b =>
                 {
                     b.HasOne("WeAreDevs.Models.Curso", "Curso")
@@ -166,35 +154,9 @@ namespace WeAreDevs.Migrations
                     b.Navigation("Conta");
                 });
 
-            modelBuilder.Entity("WeAreDevs.Models.UsuarioCurso", b =>
-                {
-                    b.HasOne("WeAreDevs.Models.Curso", "Curso")
-                        .WithMany("Usuario")
-                        .HasForeignKey("CursoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WeAreDevs.Models.Usuario", "Usuario")
-                        .WithMany("Curso")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Curso");
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("WeAreDevs.Models.Curso", b =>
                 {
                     b.Navigation("Topicos");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("WeAreDevs.Models.Usuario", b =>
-                {
-                    b.Navigation("Curso");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,5 +7,6 @@
         public string Senha { get; set; }
         public string Tipo { get; set; }
         public bool Status { get; set; }
+        public List<Guid> Cursos { get; set; }
     }
 }

@@ -7,5 +7,6 @@
         public string Email { get; set; }
         public string Senha { get; set; }
         public Conta Conta { get; set; }
+        public ICollection<UsuarioCurso> Curso { get; set; }
     }
 }

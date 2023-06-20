@@ -49,6 +49,17 @@ namespace WeAreDevs.Controllers
         }
 
         /// <summary>
+        /// Atualiza um curso.
+        /// </summary>
+        /// <param name="dto">Objeto para a atualização de um curso</param>
+        /// <returns></returns>
+        [HttpPut]
+        public CursoResponseDto AtualizarCurso([FromBody] CursoUpdateRequestDto dto)
+        {
+            return _cursoRepository.AtualizarCurso(dto);
+        }
+
+        /// <summary>
         /// Remove um curso.
         /// </summary>
         /// <param name="id">Id do curso</param>

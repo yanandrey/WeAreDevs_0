@@ -7,5 +7,6 @@
         public string Email { get; set; }
         public string Tipo { get; set; }
         public bool Status { get; set; }
+        public List<UsuarioCursoResponseDto> Cursos { get; set; }
     }
 }
