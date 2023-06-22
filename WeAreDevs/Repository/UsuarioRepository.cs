@@ -1,6 +1,7 @@
 ﻿using WeAreDevs.Context;
 using WeAreDevs.DTOs.Request;
 using WeAreDevs.DTOs.Response;
+using WeAreDevs.Helpers;
 using WeAreDevs.Models;
 
 namespace WeAreDevs.Repository
@@ -12,6 +13,7 @@ namespace WeAreDevs.Repository
         UsuarioResponseDto InserirUsuario(UsuarioRequestDto dto);
         UsuarioResponseDto AtualizarUsuario(UsuarioUpdateRequestDto dto);
         void RemoverUsuario(Guid id);
+        Usuario AutenticarUsuario(LoginRequestDto dto);
     }
 
     public class UsuarioRepository : IUsuarioRepository
@@ -101,7 +103,7 @@ namespace WeAreDevs.Repository
             {
                 Nome = dto.Nome,
                 Email = dto.Email,
-                Senha = dto.Senha,
+                Senha = HashingHelper.CriarHash(dto.Senha),
                 Conta = contaUsuario
             };
 
@@ -141,7 +143,7 @@ namespace WeAreDevs.Repository
 
             usuario.Nome = dto.Nome;
             usuario.Email = dto.Email;
-            usuario.Senha = dto.Senha;
+            usuario.Senha = HashingHelper.CriarHash(dto.Senha);
 
             var usuarioCursos = _context.UsuarioCursos
                 .Where(x => x.UsuarioId == dto.Id)
@@ -206,6 +208,21 @@ namespace WeAreDevs.Repository
 
             _context.Usuarios.Remove(usuario);
             _context.SaveChanges();
+        }
+
+        public Usuario AutenticarUsuario(LoginRequestDto dto)
+        {
+            var usuario = _context.Usuarios
+                .FirstOrDefault(x => x.Email == dto.Email);
+
+            if (usuario == default) throw new Exception("Usuário não encontrado");
+
+            if (usuario.Senha == null || !HashingHelper.ValidarHash(dto.Senha, usuario.Senha))
+            {
+                throw new Exception("Credencial/usuário inválido");
+            }
+
+            return usuario;
         }
     }
 }

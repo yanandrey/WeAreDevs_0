@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WeAreDevs.DTOs.Request;
 using WeAreDevs.DTOs.Response;
 using WeAreDevs.Repository;
@@ -6,6 +7,7 @@ using WeAreDevs.Repository;
 namespace WeAreDevs.Controllers
 {
     [Route("usuario")]
+    [Authorize]
     [ApiController]
     public class UsuarioController : ControllerBase
     {
