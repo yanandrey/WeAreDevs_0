@@ -26,6 +26,9 @@ namespace WeAreDevs.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public LoginResponseDto GerarToken([FromBody] LoginRequestDto dto)
         {
             var usuario = _usuario.AutenticarUsuario(dto);

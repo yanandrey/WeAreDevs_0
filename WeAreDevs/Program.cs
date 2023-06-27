@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using WeAreDevs.Context;
+using WeAreDevs.Middlewares;
 using WeAreDevs.Models;
 using WeAreDevs.Repository;
 using WeAreDevs.Services;
@@ -105,6 +106,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware(typeof(ErroHandlingMiddleware));
 
 app.MapControllers();
 

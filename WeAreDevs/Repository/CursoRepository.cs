@@ -1,6 +1,7 @@
 ﻿using WeAreDevs.Context;
 using WeAreDevs.DTOs.Request;
 using WeAreDevs.DTOs.Response;
+using WeAreDevs.Exceptions;
 using WeAreDevs.Models;
 
 namespace WeAreDevs.Repository
@@ -56,7 +57,7 @@ namespace WeAreDevs.Repository
                 })
                 .FirstOrDefault();
 
-            if (curso == default) throw new Exception("Curso não encontrado");
+            if (curso == default) throw new NotFoundException("Curso não encontrado");
 
             var topicosDoCurso = _context.Topicos
                 .Where(x => x.Curso.Id == id)
@@ -76,7 +77,7 @@ namespace WeAreDevs.Repository
                     })
                     .FirstOrDefault();
 
-                if (topico == default) throw new Exception("Tópico não encontrado");
+                if (topico == default) throw new NotFoundException("Tópico não encontrado");
 
                 listaDeTopicos.Add(topico);
             }
@@ -106,7 +107,7 @@ namespace WeAreDevs.Repository
             var curso = _context.Cursos
                 .FirstOrDefault(x => x.Id == dto.Id);
 
-            if (curso == default) throw new Exception("Curso não encontrado");
+            if (curso == default) throw new NotFoundException("Curso não encontrado");
 
             curso.Nome = dto.Nome;
             curso.Descricao = dto.Descricao;
@@ -122,7 +123,7 @@ namespace WeAreDevs.Repository
             var curso = _context.Cursos
                 .FirstOrDefault(x => x.Id == id);
 
-            if (curso == default) throw new Exception("Curso não encontrado");
+            if (curso == default) throw new NotFoundException("Curso não encontrado");
 
             _context.Cursos.Remove(curso);
             _context.SaveChanges();

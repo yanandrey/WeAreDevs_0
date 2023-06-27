@@ -1,6 +1,7 @@
 ﻿using WeAreDevs.Context;
 using WeAreDevs.DTOs.Request;
 using WeAreDevs.DTOs.Response;
+using WeAreDevs.Exceptions;
 using WeAreDevs.Helpers;
 using WeAreDevs.Models;
 
@@ -59,7 +60,7 @@ namespace WeAreDevs.Repository
                 })
                 .FirstOrDefault();
 
-            if (usuario == default) throw new Exception("Usuário não encontrado");
+            if (usuario == default) throw new NotFoundException("Usuário não encontrado");
 
             var cursosDoUsuario = _context.UsuarioCursos
                 .Where(x => x.UsuarioId == id)
@@ -79,7 +80,7 @@ namespace WeAreDevs.Repository
                     })
                     .FirstOrDefault();
 
-                if (curso == default) throw new Exception("Curso não encontrado");
+                if (curso == default) throw new NotFoundException("Curso não encontrado");
 
                 listaDeCursos.Add(curso);
             }
@@ -116,7 +117,7 @@ namespace WeAreDevs.Repository
                     var curso = _context.Cursos
                         .FirstOrDefault(x => x.Id == item);
 
-                    if (curso == default) throw new Exception("Curso não encontrado");
+                    if (curso == default) throw new NotFoundException("Curso não encontrado");
 
                     var usuarioCurso = new UsuarioCurso
                     {
@@ -139,7 +140,7 @@ namespace WeAreDevs.Repository
                 .Where(x => x.Id == dto.Id)
                 .FirstOrDefault();
 
-            if (usuario == default) throw new Exception("Usuário não encontrado");
+            if (usuario == default) throw new NotFoundException("Usuário não encontrado");
 
             usuario.Nome = dto.Nome;
             usuario.Email = dto.Email;
@@ -156,7 +157,7 @@ namespace WeAreDevs.Repository
                 var curso = _context.Cursos
                     .FirstOrDefault(x => x.Id == dtoCurso);
 
-                if (curso == default) throw new Exception("Curso não encontrado");
+                if (curso == default) throw new NotFoundException("Curso não encontrado");
 
                 var usuarioCursoExistente = _context.UsuarioCursos
                     .Where(x => x.UsuarioId == usuario.Id)
@@ -187,7 +188,7 @@ namespace WeAreDevs.Repository
                         .Where(x => x.CursoId == curso)
                         .FirstOrDefault();
 
-                    if (usuarioCurso == default) throw new Exception("UsuarioCurso não encontrado");
+                    if (usuarioCurso == default) throw new NotFoundException("UsuarioCurso não encontrado");
 
                     _context.UsuarioCursos.Remove(usuarioCurso);
                 }
@@ -204,7 +205,7 @@ namespace WeAreDevs.Repository
                 .Where(x => x.Id == id)
                 .FirstOrDefault();
 
-            if (usuario == default) throw new Exception("Usuário não encontrado");
+            if (usuario == default) throw new NotFoundException("Usuário não encontrado");
 
             _context.Usuarios.Remove(usuario);
             _context.SaveChanges();
@@ -215,11 +216,11 @@ namespace WeAreDevs.Repository
             var usuario = _context.Usuarios
                 .FirstOrDefault(x => x.Email == dto.Email);
 
-            if (usuario == default) throw new Exception("Usuário não encontrado");
+            if (usuario == default) throw new NotFoundException("Usuário não encontrado");
 
             if (usuario.Senha == null || !HashingHelper.ValidarHash(dto.Senha, usuario.Senha))
             {
-                throw new Exception("Credencial/usuário inválido");
+                throw new UnauthorizedException("Credencial/usuário inválido");
             }
 
             return usuario;
